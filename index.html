@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tiffin Tonic - Healthy Meals</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+
+    :root {
+      --green:       #2d6a4f;
+      --green-light: #40916c;
+      --green-pale:  #d8f3dc;
+      --orange:      #f4a261;
+      --orange-dark: #e76f51;
+      --cream:       #fffdf7;
+      --text:        #1b1b1b;
+      --gray:        #6c757d;
+      --border:      #c8e6c9;
+      --shadow:      0 4px 20px rgba(0,0,0,0.09);
+      --radius:      16px;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { font-size: 16px; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      -webkit-text-size-adjust: 100%;
+      overflow-x: hidden;
+    }
+
+    img { max-width: 100%; height: auto; display: block; }
+
+    /* NAVBAR */
+    .navbar {
+      background: var(--green);
+      padding: 0 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      height: 64px;
+      box-shadow: 0 2px 14px rgba(45,106,79,0.25);
+    }
+    .logo {
+      font-family: 'Lora', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: white;
+      white-space: nowrap;
+    }
+    .logo .accent { color: var(--orange); }
+    .nav-links { display: flex; list-style: none; gap: 4px; }
+    .nav-links a {
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: 8px;
+      transition: background 0.2s, color 0.2s;
+      display: block;
+      white-space: nowrap;
+    }
+    .nav-links a:hover  { background: rgba(255,255,255,0.12); color: white; }
+    .nav-links a.active { background: var(--orange); color: white; }
+
+    /* PAGES */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, var(--green) 0%, var(--green-light) 100%);
+      padding: 80px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0; right: 0;
+      height: 50px;
+      background: var(--cream);
+      clip-path: ellipse(55% 100% at 50% 100%);
+    }
+    .hero-tag {
+      display: inline-block;
+      background: rgba(244,162,97,0.20);
+      color: #ffd59e;
+      border: 1px solid rgba(244,162,97,0.40);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 16px;
+      border-radius: 20px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+    .hero-icon {
+      font-size: 76px;
+      display: block;
+      margin-bottom: 20px;
+      animation: float 3.2s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-10px); }
+    }
+    .hero h1 {
+      font-family: 'Lora', serif;
+      font-size: clamp(24px, 5vw, 44px);
+      font-weight: 700;
+      color: white;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .hero h1 .highlight { color: var(--orange); }
+    .hero p {
+      font-size: clamp(14px, 2.5vw, 17px);
+      color: rgba(255,255,255,0.80);
+      max-width: 500px;
+      margin: 0 auto 36px;
+      line-height: 1.75;
+    }
+    .hero-buttons {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-block;
+      padding: 13px 30px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      font-family: 'Nunito', sans-serif;
+      transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s;
+    }
+    .btn:hover  { transform: translateY(-2px); opacity: 0.93; }
+    .btn:active { transform: translateY(0); }
+    .btn-orange {
+      background: var(--orange);
+      color: white;
+      box-shadow: 0 4px 14px rgba(244,162,97,0.40);
+    }
+    .btn-orange:hover { background: var(--orange-dark); }
+    .btn-white-outline {
+      background: transparent;
+      border: 2px solid rgba(255,255,255,0.55);
+      color: white;
+    }
+    .btn-white-outline:hover { border-color: white; }
+    .btn-green {
+      background: var(--green);
+      color: white;
+      box-shadow: 0 4px 14px rgba(45,106,79,0.30);
+    }
+    .btn-green:hover { background: var(--green-light); }
+    .btn-gray { background: #edf0ed; color: #4a5e4a; }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none !important; }
+
+    /* STATS BAR */
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      background: white;
+      border-bottom: 2px solid var(--green-pale);
+    }
+    .stat-item {
+      text-align: center;
+      padding: 24px 44px;
+      border-right: 1px solid #e8f5e9;
+      flex: 1;
+      min-width: 120px;
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-number {
+      font-family: 'Lora', serif;
+      font-size: clamp(22px, 3.5vw, 30px);
+      font-weight: 700;
+      color: var(--green);
+    }
+    .stat-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gray);
+      margin-top: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    /* FEATURES */
+    .features {
+      background: white;
+      padding: 52px 40px;
+      margin: 40px auto;
+      max-width: 950px;
+      border-radius: var(--radius);
+      width: 92%;
+      box-shadow: var(--shadow);
+    }
+    .features h2 {
+      font-family: 'Lora', serif;
+      font-size: clamp(20px, 3vw, 28px);
+      color: var(--green);
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 20px;
+    }
+    .feature-card {
+      background: var(--cream);
+      border-radius: 14px;
+      padding: 26px 18px;
+      text-align: center;
+      border: 1.5px solid var(--green-pale);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .feature-card:hover { transform: translateY(-5px); box-shadow: 0 10px 28px rgba(45,106,79,0.13); }
+    .f-icon { font-size: 40px; margin-bottom: 12px; }
+    .feature-card h3 { font-size: 15px; font-weight: 700; color: var(--green); margin-bottom: 7px; }
+    .feature-card p  { font-size: 13px; color: var(--gray); line-height: 1.55; }
+
+    /* CONTAINER */
+    .container { max-width: 950px; margin: 38px auto; padding: 0 24px; }
+    .section-title {
+      font-family: 'Lora', serif;
+      font-size: clamp(20px, 3vw, 26px);
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 26px;
+      padding-left: 16px;
+      border-left: 5px solid var(--orange);
+    }
+
+    /* MENU */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 22px;
+    }
+    .meal-card {
+      background: white;
+      border: 2px solid #e8f0e8;
+      border-radius: var(--radius);
+      padding: 24px 20px;
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+      position: relative;
+    }
+    .meal-card:hover { border-color: var(--green-light); box-shadow: 0 8px 24px rgba(64,145,108,0.15); transform: translateY(-4px); }
+    .meal-card.selected { border-color: var(--green); background: var(--green-pale); box-shadow: 0 8px 24px rgba(45,106,79,0.20); }
+    .meal-icon { font-size: 44px; margin-bottom: 12px; display: block; }
+    .meal-icon img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; }
+    .meal-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      background: var(--green-pale);
+      color: var(--green);
+      padding: 3px 11px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+      border: 1px solid var(--border);
+    }
+    .meal-card.selected .meal-badge { background: white; }
+    .meal-card h3 { font-size: 17px; font-weight: 700; color: var(--green); margin-bottom: 6px; }
+    .meal-card p  { font-size: 13px; color: var(--gray); margin-bottom: 14px; line-height: 1.5; }
+    .meal-price   { font-family: 'Lora', serif; font-size: 22px; font-weight: 700; color: var(--orange-dark); }
+    .check-mark   { position: absolute; top: 14px; right: 16px; font-size: 22px; display: none; }
+    .meal-card.selected .check-mark { display: block; }
+    .meal-card-text { flex: 1; min-width: 0; }
+    .menu-action  { text-align: center; margin-top: 34px; padding-bottom: 10px; }
+
+    /* ORDER FORM */
+    .order-form-box { background: white; border-radius: var(--radius); padding: 38px; box-shadow: var(--shadow); }
+    .selected-meal-info {
+      background: var(--green-pale);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 22px;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .sub-label { font-size: 11px; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 4px; }
+    .meal-name-display  { font-size: 17px; font-weight: 700; color: var(--green); }
+    .meal-price-display { font-family: 'Lora', serif; font-size: 26px; font-weight: 700; color: var(--orange-dark); }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 7px; }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 15px;
+      border: 1.5px solid #d4e0d4;
+      border-radius: 10px;
+      outline: none;
+      font-family: 'Nunito', sans-serif;
+      color: var(--text);
+      background: var(--cream);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--green-light); box-shadow: 0 0 0 3px rgba(64,145,108,0.13); background: white; }
+    .form-group textarea { height: 90px; resize: none; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .error-msg { font-size: 12px; color: #c62828; margin-top: 5px; display: none; font-weight: 600; }
+    .form-actions { display: flex; gap: 14px; margin-top: 14px; flex-wrap: wrap; }
+
+    /* CONFIRMATION */
+    .confirm-box {
+      background: white;
+      border-radius: var(--radius);
+      padding: 52px 38px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      max-width: 540px;
+      margin: 0 auto;
+    }
+    .confirm-anim { font-size: 70px; display: block; margin-bottom: 18px; animation: pop 0.5s cubic-bezier(0.34,1.56,0.64,1) both; }
+    @keyframes pop { from { transform: scale(0.2); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .confirm-box h2 { font-family: 'Lora', serif; font-size: clamp(20px, 3vw, 26px); color: var(--green); margin-bottom: 8px; }
+    .confirm-box .sub-msg { font-size: 15px; color: var(--gray); margin-bottom: 26px; line-height: 1.65; }
+    .order-id-box { background: var(--green-pale); border: 1px solid var(--border); border-radius: 8px; padding: 11px 22px; font-size: 14px; font-weight: 700; color: var(--green); margin-bottom: 24px; }
+    .order-summary { background: var(--cream); border: 1px solid #e0ece0; border-radius: 12px; padding: 22px 24px; text-align: left; margin-bottom: 26px; }
+    .order-summary h3 { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.6px; padding-bottom: 10px; border-bottom: 1px solid #ddeedd; }
+    .summary-row { display: flex; justify-content: space-between; font-size: 14px; padding: 7px 0; border-bottom: 1px dashed #e4ece4; gap: 12px; }
+    .summary-row:last-child { border-bottom: none; font-weight: 700; color: var(--green); font-size: 17px; margin-top: 8px; padding-top: 12px; }
+    .row-label { color: var(--gray); flex-shrink: 0; }
+    .row-value  { text-align: right; word-break: break-word; }
+    .delivery-info { font-size: 13px; color: var(--gray); margin-bottom: 24px; }
+
+    /* ABOUT */
+    .about-box { background: white; border-radius: var(--radius); padding: 38px; box-shadow: var(--shadow); }
+    .about-box h2 { font-family: 'Lora', serif; color: var(--green); margin-bottom: 18px; font-size: clamp(18px, 2.5vw, 22px); line-height: 1.4; }
+    .about-box p  { font-size: 15px; color: #4a5c4a; line-height: 1.80; margin-bottom: 15px; }
+    .info-pills   { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0 28px; }
+    .pill { background: var(--green-pale); border: 1px solid var(--border); border-radius: 8px; padding: 9px 16px; font-size: 13px; font-weight: 600; color: var(--green); }
+    .pill span { color: var(--orange-dark); }
+    .team-heading { font-family: 'Lora', serif; font-size: 20px; color: var(--green); margin: 30px 0 18px; }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 16px;
+    }
+    .team-card { background: var(--cream); border-radius: 14px; padding: 22px 12px; text-align: center; border: 1.5px solid var(--green-pale); transition: transform 0.2s; }
+    .team-card:hover { transform: translateY(-4px); }
+    .team-avatar { width: 54px; height: 54px; background: linear-gradient(135deg, var(--green), var(--green-light)); color: white; font-size: 17px; font-weight: 700; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; }
+    .team-card h4 { font-size: 13px; font-weight: 700; color: var(--green); }
+    .team-card p  { font-size: 11px; color: var(--gray); margin-top: 3px; }
+
+    /* FOOTER */
+    footer {
+      background: var(--green);
+      color: rgba(255,255,255,0.70);
+      text-align: center;
+      padding: 28px 20px;
+      margin-top: 60px;
+      font-size: 14px;
+      line-height: 1.85;
+    }
+    footer strong { color: white; }
+
+    /* ── RESPONSIVE MEDIA QUERIES ── */
+
+    /* Large tablets (≤ 900px) */
+    @media (max-width: 900px) {
+      .navbar { padding: 0 20px; }
+      .nav-links a { padding: 8px 12px; }
+      .stat-item { padding: 18px 20px; }
+      .features  { padding: 36px 28px; width: 94%; }
+      .container { padding: 0 20px; }
+      .order-form-box { padding: 30px 24px; }
+      .about-box { padding: 30px 24px; }
+    }
+
+    /* Tablets (≤ 768px) */
+    @media (max-width: 768px) {
+      .navbar {
+        height: auto;
+        padding: 12px 16px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .nav-links { width: 100%; }
+      .nav-links li { flex: 1; text-align: center; }
+      .nav-links a  { font-size: 13px; padding: 8px 6px; text-align: center; }
+      .hero { padding: 50px 20px 64px; }
+      .hero-icon { font-size: 62px; }
+      .stat-item { padding: 16px 18px; min-width: 100px; }
+      .features  { padding: 28px 20px; width: 95%; margin: 24px auto; }
+      .menu-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+      .confirm-box { padding: 36px 24px; }
+      .order-summary { padding: 18px 16px; }
+    }
+
+    /* Mobile (≤ 540px) */
+    @media (max-width: 540px) {
+      .hero { padding: 40px 16px 58px; }
+      .hero-icon { font-size: 52px; }
+      .hero p    { font-size: 14px; }
+      .hero-buttons { flex-direction: column; align-items: center; }
+      .hero-buttons .btn { width: 100%; max-width: 300px; text-align: center; }
+      .stat-item { padding: 14px 12px; min-width: 80px; }
+      .features  { padding: 22px 14px; width: 96%; margin: 18px auto; }
+      .features-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .feature-card  { padding: 18px 12px; }
+      .f-icon        { font-size: 32px; }
+      .container { padding: 0 14px; margin: 20px auto; }
+      .menu-grid { grid-template-columns: 1fr; gap: 12px; }
+      .meal-card {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 16px;
+      }
+      .meal-icon { font-size: 36px; margin-bottom: 0; flex-shrink: 0; }
+      .meal-icon img { width: 52px; height: 52px; }
+      .meal-card h3 { font-size: 15px; }
+      .meal-card p  { font-size: 12px; margin-bottom: 6px; }
+      .meal-price   { font-size: 17px; }
+      .order-form-box { padding: 20px 14px; }
+      .form-row   { grid-template-columns: 1fr; gap: 0; }
+      .form-actions { flex-direction: column; }
+      .form-actions .btn { width: 100%; text-align: center; }
+      .confirm-box { padding: 28px 16px; }
+      .summary-row { font-size: 13px; }
+      .summary-row:last-child { font-size: 15px; }
+      .about-box { padding: 20px 14px; }
+      .info-pills { gap: 8px; }
+      .pill { font-size: 12px; padding: 7px 12px; }
+    }
+
+    /* Small mobile (≤ 380px) */
+    @media (max-width: 380px) {
+      .logo { font-size: 18px; }
+      .nav-links a { font-size: 11px; padding: 7px 4px; }
+      .hero-icon { font-size: 44px; }
+      .hero-tag  { font-size: 10px; letter-spacing: 1px; }
+      .stat-item  { min-width: 70px; padding: 10px 8px; }
+      .stat-label { font-size: 10px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .feature-card  { padding: 16px 12px; }
+      .meal-card     { gap: 10px; padding: 12px; }
+      .meal-icon img { width: 44px; height: 44px; }
+      .order-form-box { padding: 16px 12px; }
+      .selected-meal-info { padding: 12px 14px; }
+      .meal-price-display { font-size: 20px; }
+      .confirm-box   { padding: 22px 12px; }
+      .order-id-box  { font-size: 12px; padding: 9px 14px; }
+      .order-summary { padding: 14px 12px; }
+      .about-box { padding: 16px 12px; }
+      .team-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .team-card { padding: 16px 8px; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="logo">🍱 Tiffin <span class="accent">Tonic</span></div>
+    <ul class="nav-links">
+      <li><a href="#" class="active" onclick="showPage('home', this); return false;">Home</a></li>
+      <li><a href="#" onclick="showPage('menu', this); return false;">Menu</a></li>
+      <li><a href="#" onclick="showPage('order', this); return false;">Order</a></li>
+      <li><a href="#" onclick="showPage('about', this); return false;">About</a></li>
+    </ul>
+  </nav>
+
+  <!-- HOME PAGE -->
+  <div id="page-home" class="page active">
+    <div class="hero">
+      <div class="hero-tag">🌿 Fresh &amp; Healthy Every Day</div>
+      <span class="hero-icon">🍛</span>
+      <h1>Welcome to <span class="highlight">Tiffin Tonic!</span></h1>
+      <p>Healthy, hygienic, and affordable meals delivered to students and working professionals.</p>
+      <div class="hero-buttons">
+        <button class="btn btn-orange" onclick="showPage('menu', null)">See Today's Menu 🍽️</button>
+        <button class="btn btn-white-outline" onclick="showPage('about', null)">About Us</button>
+      </div>
+    </div>
+    <div class="stats-bar">
+      <div class="stat-item"><div class="stat-number">6+</div><div class="stat-label">Meal Options</div></div>
+      <div class="stat-item"><div class="stat-number">₹25</div><div class="stat-label">Starting Price</div></div>
+      <div class="stat-item"><div class="stat-number">30 min</div><div class="stat-label">Delivery Time</div></div>
+      <div class="stat-item"><div class="stat-number">100%</div><div class="stat-label">Hygienic Food</div></div>
+    </div>
+    <div class="features">
+      <h2>Why Choose Tiffin Tonic?</h2>
+      <div class="features-grid">
+        <div class="feature-card"><div class="f-icon">🥗</div><h3>Healthy Food</h3><p>Balanced and nutritious home-style meals every day.</p></div>
+        <div class="feature-card"><div class="f-icon">💰</div><h3>Affordable</h3><p>Budget-friendly prices specially for students.</p></div>
+        <div class="feature-card"><div class="f-icon">🚚</div><h3>Fast Delivery</h3><p>Delivered to your hostel or office in 30 minutes.</p></div>
+        <div class="feature-card"><div class="f-icon">🧼</div><h3>Hygienic</h3><p>Prepared in a clean and safe kitchen environment.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MENU PAGE -->
+  <div id="page-menu" class="page">
+    <div class="container">
+      <div class="section-title">Today's Menu</div>
+      <div class="menu-grid">
+        <div class="meal-card" onclick="selectMeal(this, 'Dal Rice', 50)">
+          <span class="check-mark">✅</span>
+          <div class="meal-icon"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZmhlCOdPmmNgOqjWteCCkAMIQlevl0TMVIg&s" alt="Dal Rice"></div>
+          <div class="meal-card-text">
+            <span class="meal-badge">Popular</span>
+            <h3>Dal Rice</h3>
+            <p>Healthy dal with steamed rice. Full of protein and energy.</p>
+            <div class="meal-price">₹50</div>
+          </div>
+        </div>
+        <div class="meal-card" onclick="selectMeal(this, 'Chapati Sabzi', 40)">
+          <span class="check-mark">✅</span>
+          <div class="meal-icon"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzytA1MAtBBDh_QKIUGy9sVaG4RAp1enMCMg&s" alt="Chapati Sabzi"></div>
+          <div class="meal-card-text">
+            <span class="meal-badge">Veg</span>
+            <h3>Chapati Sabzi</h3>
+            <p>3 soft chapatis with fresh seasonal vegetable curry.</p>
+            <div class="meal-price">₹40</div>
+          </div>
+        </div>
+        <div class="meal-card" onclick="selectMeal(this, 'Khichdi', 35)">
+          <span class="check-mark">✅</span>
+          <div class="meal-icon"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXKPqFHYmEz6hE1fA7RAPbit3-_f0JPUyeWA&s" alt="Khichdi"></div>
+          <div class="meal-card-text">
+            <span class="meal-badge">Light</span>
+            <h3>Khichdi</h3>
+            <p>Soft rice and lentils cooked together. Easy to digest.</p>
+            <div class="meal-price">₹35</div>
+          </div>
+        </div>
+        <div class="meal-card" onclick="selectMeal(this, 'Rajma Chawal', 55)">
+          <span class="check-mark">✅</span>
+          <div class="meal-icon"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyYAySFRAv0oK-5yvr9Pz3Dh1NLbgLUcG2oQ&s" alt="Rajma Chawal"></div>
+          <div class="meal-card-text">
+            <span class="meal-badge">Protein</span>
+            <h3>Rajma Chawal</h3>
+            <p>Protein-rich kidney bean curry served with steamed rice.</p>
+            <div class="meal-price">₹55</div>
+          </div>
+        </div>
+        <div class="meal-card" onclick="selectMeal(this, 'Poha', 25)">
+          <span class="check-mark">✅</span>
+          <div class="meal-icon"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTn-giTNhu_j3n8TAcH3459ZLNYGc2CIFsVw&s" alt="Poha"></div>
+          <div class="meal-card-text">
+            <span class="meal-badge">Breakfast</span>
+            <h3>Poha</h3>
+            <p>Light and tasty poha with peanuts, onion, and lemon.</p>
+            <div class="meal-price">₹25</div>
+          </div>
+        </div>
+        <div class="meal-card" onclick="selectMeal(this, 'Curd Rice', 30)">
+          <span class="check-mark">✅</span>
+          <div class="meal-icon"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7c4y_loctYh3BQbCJAfjOYB5RMDXktb9XRw&s" alt="Curd Rice"></div>
+          <div class="meal-card-text">
+            <span class="meal-badge">Cooling</span>
+            <h3>Curd Rice</h3>
+            <p>Creamy curd rice served with tangy mango pickle on the side.</p>
+            <div class="meal-price">₹30</div>
+          </div>
+        </div>
+      </div>
+      <div class="menu-action">
+        <button class="btn btn-green" id="goOrderBtn" onclick="goToOrderPage()" disabled>Select a Meal to Order</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORDER FORM PAGE -->
+  <div id="page-order" class="page">
+    <div class="container">
+      <div class="section-title">Place Your Order</div>
+      <div class="order-form-box">
+        <div class="selected-meal-info">
+          <div>
+            <div class="sub-label">You selected</div>
+            <div class="meal-name-display" id="display-meal-name">No meal selected</div>
+          </div>
+          <div class="meal-price-display" id="display-meal-price">₹0</div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inp-name">Full Name *</label>
+            <input type="text" id="inp-name" placeholder="e.g. Rahul Kumar">
+            <div class="error-msg" id="err-name">⚠ Please enter your name.</div>
+          </div>
+          <div class="form-group">
+            <label for="inp-phone">Phone Number *</label>
+            <input type="tel" id="inp-phone" placeholder="e.g. 9876543210" maxlength="10">
+            <div class="error-msg" id="err-phone">⚠ Please enter a valid 10-digit number.</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inp-address">Delivery Address *</label>
+          <textarea id="inp-address" placeholder="Hostel name / Room number / Area / City..."></textarea>
+          <div class="error-msg" id="err-addr">⚠ Please enter your delivery address.</div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inp-time">Meal Time</label>
+            <select id="inp-time">
+              <option>Breakfast (8:00 AM)</option>
+              <option>Lunch (12:30 PM)</option>
+              <option selected>Dinner (7:30 PM)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="inp-qty">Quantity</label>
+            <select id="inp-qty">
+              <option value="1">1 Tiffin</option>
+              <option value="2">2 Tiffins</option>
+              <option value="3">3 Tiffins</option>
+              <option value="4">4 Tiffins</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-gray"  onclick="showPage('menu', null)">← Back to Menu</button>
+          <button class="btn btn-green" onclick="placeOrder()">Place Order ➜</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIRMATION PAGE -->
+  <div id="page-confirm" class="page">
+    <div class="container">
+      <div class="confirm-box">
+        <span class="confirm-anim">✅</span>
+        <h2>Order Placed Successfully!</h2>
+        <p class="sub-msg">Thank you! Your tiffin is being freshly prepared for you.</p>
+        <div class="order-id-box">Order ID: <strong id="c-order-id">#TT-0000</strong></div>
+        <div class="order-summary">
+          <h3>Order Summary</h3>
+          <div class="summary-row"><span class="row-label">Customer Name</span><span class="row-value" id="c-name">-</span></div>
+          <div class="summary-row"><span class="row-label">Phone</span><span class="row-value" id="c-phone">-</span></div>
+          <div class="summary-row"><span class="row-label">Meal</span><span class="row-value" id="c-meal">-</span></div>
+          <div class="summary-row"><span class="row-label">Quantity</span><span class="row-value" id="c-qty">-</span></div>
+          <div class="summary-row"><span class="row-label">Meal Time</span><span class="row-value" id="c-time">-</span></div>
+          <div class="summary-row"><span class="row-label">Address</span><span class="row-value" id="c-addr">-</span></div>
+          <div class="summary-row"><span class="row-label">Total Amount</span><span class="row-value" id="c-total">-</span></div>
+        </div>
+        <p class="delivery-info">⏱️ Estimated Delivery: <strong>25 – 30 minutes</strong></p>
+        <button class="btn btn-orange" onclick="orderAgain()">Order Again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABOUT PAGE -->
+  <div id="page-about" class="page">
+    <div class="container">
+      <div class="section-title">About This Project</div>
+      <div class="about-box">
+        <h2>Tiffin Tonic — Healthy Tiffin Service System</h2>
+        <p>This project is a web-based application developed as part of our college project submission for the 6th Semester, B.Tech (CSE) at NIIS Institute of Engineering and Technology, Chhatabar, Bhubaneswar.</p>
+        <p>The system is designed to solve a real problem: many students and working professionals depend on unhealthy fast food because they don't have time to cook. Our platform lets users browse healthy meals and place orders easily from any device.</p>
+        <div class="info-pills">
+          <div class="pill">💻 <span>Technologies:</span> HTML, CSS, JavaScript</div>
+          <div class="pill">🎓 <span>Semester:</span> 6th Sem B.Tech CSE</div>
+          <div class="pill">👩‍🏫 <span>Guide:</span> Miss Rajani Meher, Asst. Prof.</div>
+        </div>
+        <div class="team-heading">Our Team</div>
+        <div class="team-grid">
+          <div class="team-card"><div class="team-avatar">M1</div><h4>Rudra Narayan Nayak</h4><p>Team Member</p></div>
+          <div class="team-card"><div class="team-avatar">TL</div><h4>Debabrata Sahoo</h4><p>Team Leader</p></div>
+          <div class="team-card"><div class="team-avatar">M3</div><h4>Harish Samal</h4><p>Team Member</p></div>
+          <div class="team-card"><div class="team-avatar">M4</div><h4>Biplab Jena</h4><p>Team Member</p></div>
+          <div class="team-card"><div class="team-avatar">M5</div><h4>Gyana Ranjan Patro</h4><p>Team Member</p></div>
+          <div class="team-card"><div class="team-avatar">M6</div><h4>D. Subham Naidu</h4><p>Team Member</p></div>
+          <div class="team-card"><div class="team-avatar">M7</div><h4>Soumya Ranjan Mohanty</h4><p>Team Member</p></div>
+          <div class="team-card"><div class="team-avatar">M8</div><h4>Sweta Dash</h4><p>Team Member</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REGISTER PAGE -->
+<div id="page-register" class="page">
+  <div class="container">
+    <div class="section-title">Create Account</div>
+
+    <div class="order-form-box">
+
+      <div class="form-group">
+        <label>Full Name *</label>
+        <input type="text" id="reg-name" placeholder="Enter your name">
+      </div>
+
+      <div class="form-group">
+        <label>Email *</label>
+        <input type="email" id="reg-email" placeholder="Enter your email">
+      </div>
+
+      <div class="form-group">
+  <label>Phone *</label>
+  <input type="tel" id="reg-phone" placeholder="Enter phone number">
+</div>
+
+      <div class="form-group">
+        <label>Password *</label>
+        <input type="password" id="reg-password" placeholder="Enter password">
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-green" onclick="registerUser()">Register</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p><strong>Tiffin Tonic</strong> — Healthy Tiffin Service System</p>
+    <p>B.Tech CSE &bull; 6th Semester &bull; NIIS Institute of Engineering &amp; Technology, Bhubaneswar</p>
+  </footer>
+
+  <script>
+    async function registerUser() {
+  const name = document.getElementById("reg-name").value.trim();
+  const email = document.getElementById("reg-email").value.trim();
+  const phone = document.getElementById("reg-phone").value.trim();
+  const password = document.getElementById("reg-password").value.trim();
+
+  if (!name || !email || !phone || !password) {
+    alert("Please fill all fields");
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API_BASE}/api/auth/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        phone,
+        password
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || "Registration failed");
+    }
+
+    alert("✅ Registered Successfully!");
+    showPage("home");
+
+  } catch (err) {
+    console.error(err);
+    alert("❌ " + err.message);
+  }
+}
+
+let selectedMealName  = "";
+let selectedMealPrice = 0;
+
+// ✅ FIXED: Always point to backend correctly
+// ✅ NEW (CORRECT) - paste this
+const API_BASE = "http://127.0.0.1:5000";
+
+function showPage(pageName, clickedLink) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById("page-" + pageName).classList.add("active");
+
+  document.querySelectorAll(".nav-links a").forEach(a => a.classList.remove("active"));
+  if (clickedLink) clickedLink.classList.add("active");
+
+  window.scrollTo(0, 0);
+}
+
+function selectMeal(cardElement, mealName, mealPrice) {
+  document.querySelectorAll(".meal-card").forEach(c => c.classList.remove("selected"));
+
+  cardElement.classList.add("selected");
+
+  selectedMealName  = mealName;
+  selectedMealPrice = mealPrice;
+
+  const btn = document.getElementById("goOrderBtn");
+  btn.disabled = false;
+  btn.textContent = `Order ${mealName} → ₹${mealPrice}`;
+
+  document.getElementById("display-meal-name").textContent  = mealName;
+  document.getElementById("display-meal-price").textContent = "₹" + mealPrice;
+}
+
+function goToOrderPage() {
+  if (!selectedMealName) {
+    alert("Please select a meal first!");
+    return;
+  }
+  showPage("order");
+}
+
+async function placeOrder() {
+  const name    = document.getElementById("inp-name").value.trim();
+  const phone   = document.getElementById("inp-phone").value.trim();
+  const address = document.getElementById("inp-address").value.trim();
+  const time    = document.getElementById("inp-time").value;
+  const qty     = parseInt(document.getElementById("inp-qty").value);
+
+  if (!selectedMealName) {
+    alert("Please select a meal first!");
+    return;
+  }
+
+  if (!name || !/^\d{10}$/.test(phone) || !address) {
+    alert("Please fill all fields correctly");
+    return;
+  }
+
+  const btn = document.querySelector(".form-actions .btn-green:last-child");
+  btn.disabled = true;
+  btn.textContent = "Placing Order...";
+
+  try {
+    // ✅ FIXED ENDPOINT
+    const res = await fetch(`${API_BASE}/api/orders/place`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      
+      body: JSON.stringify({
+        name,
+        phone,
+        address,
+        meal: selectedMealName,
+        price: selectedMealPrice,
+        quantity: qty,
+        mealTime: time
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || !data.success) {
+      throw new Error(data.message || "Order failed");
+    }
+
+    
+
+    document.getElementById("c-order-id").textContent = "#" + data.orderId;
+    document.getElementById("c-name").textContent     = name;
+    document.getElementById("c-phone").textContent    = phone;
+    document.getElementById("c-meal").textContent     = selectedMealName;
+    document.getElementById("c-qty").textContent      = qty + " Tiffin(s)";
+    document.getElementById("c-time").textContent     = time;
+    document.getElementById("c-addr").textContent     = address;
+    document.getElementById("c-total").textContent    = "₹" + data.total;
+
+    showPage("confirm");
+
+  } catch (err) {
+    console.error(err);
+    alert("❌ Failed to connect to server.\n\n👉 Check:\n1. Backend running (node server.js)\n2. Port 5000\n3. Correct API route\n4. No CORS error");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Place Order ➜";
+  }
+}
+
+function orderAgain() {
+  document.getElementById("inp-name").value    = "";
+  document.getElementById("inp-phone").value   = "";
+  document.getElementById("inp-address").value = "";
+
+  selectedMealName  = "";
+  selectedMealPrice = 0;
+
+  document.querySelectorAll(".meal-card").forEach(c => c.classList.remove("selected"));
+
+  const btn = document.getElementById("goOrderBtn");
+  btn.disabled = true;
+  btn.textContent = "Select a Meal to Order";
+
+  document.getElementById("display-meal-name").textContent  = "No meal selected";
+  document.getElementById("display-meal-price").textContent = "₹0";
+
+  showPage("home");
+}
+</script>
+
+</body>
+</html>
